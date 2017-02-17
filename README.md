@@ -1,4 +1,4 @@
-#VBA Comb Sort
+#VBA Comb Sort for 1-dimensional array
 
 [MIT license](https://opensource.org/licenses/MIT)<br>
 Copyright 2017 Raymond Wise @ [Github Source](https://github.com/RaymondWise/VBACombSort) 
