@@ -5,7 +5,7 @@ Copyright 2017 Raymond Wise @ [Github Source](https://github.com/RaymondWise/VBA
 
 **Language: VBA**
 
-[![Code Review](http://www.zomis.net/codereview/shield/?qid=125698)](http://codereview.stackexchange.com/q/145862/75587)
+[![Code Review](http://www.zomis.net/codereview/shield/?qid=145862)](http://codereview.stackexchange.com/q/145862/75587)
 
 ##What this is
 This project has procedures for comb-sorting both integers, decimals and strings. This works only on ONE-DIMENSIONAL ARRAYS.
