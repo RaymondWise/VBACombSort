@@ -2,67 +2,29 @@ Attribute VB_Name = "VBACombSort"
 Option Explicit
 
 Public Sub TestCombSort()
+    Const SORT_KEY_COLUMN As Long = 1
+    
     Dim targetSheet As Worksheet
     Set targetSheet = ActiveSheet
-    Dim rawDataArray As Variant
+    Dim dataArray As Variant
     Dim lastRow As Long
     lastRow = targetSheet.Cells(targetSheet.Rows.Count, 1).End(xlUp).Row
-    rawDataArray = targetSheet.Range(targetSheet.Cells(1, 1), targetSheet.Cells(lastRow, 1))
+    Dim lastColumn As Long
+    lastColumn = targetSheet.Cells(1, targetSheet.Columns.Count).End(xlToLeft).Column
+    
+    dataArray = targetSheet.Range(targetSheet.Cells(1, 1), targetSheet.Cells(lastRow, lastColumn))
     Dim index As Long
     
-    Dim isNumberArray As Boolean
-    isNumberArray = isNumeric(rawDataArray(1, 1))
-    
-    If isNumberArray Then
-        Dim numberArray() As Double
-        ReDim numberArray(LBound(rawDataArray) To UBound(rawDataArray))
-        numberArray() = IsNumericalArray(rawDataArray)
-        CombSortNumbers numberArray, False
-        targetSheet.Range(targetSheet.Cells(1, 2), targetSheet.Cells(lastRow, 2)) = Application.Transpose(numberArray)
-    Else:
-        Dim stringArray() As String
-        ReDim stringArray(LBound(rawDataArray) To UBound(rawDataArray))
-        stringArray() = IsStringArray(rawDataArray)
-        CombSortStrings stringArray, False
-        targetSheet.Range(targetSheet.Cells(1, 2), targetSheet.Cells(lastRow, 2)) = Application.Transpose(stringArray)
-    End If
-    
-errHandler:
-    Exit Sub
+    CombSortArray dataArray, lastColumn, SORT_KEY_COLUMN, True
+    targetSheet.Range(targetSheet.Cells(1, lastColumn + 1), targetSheet.Cells(lastRow, (lastColumn * 2))) = dataArray
     
 End Sub
 
-Private Function IsNumericalArray(ByVal rawDataArray As Variant) As Double()
-    Dim numberArray() As Double
-    ReDim numberArray(LBound(rawDataArray) To UBound(rawDataArray))
-    Dim index As Long
-    For index = LBound(rawDataArray) To UBound(rawDataArray)
-        If Not isNumeric(rawDataArray(index, 1)) Then GoTo errHandler
-        numberArray(index) = CStr(rawDataArray(index, 1))
-    Next
-    IsNumericalArray = numberArray
-    Exit Function
-errHandler:
-    MsgBox "not number"
-End Function
-Private Function IsStringArray(ByVal rawDataArray As Variant) As String()
-    Dim stringArray() As String
-    ReDim stringArray(LBound(rawDataArray) To UBound(rawDataArray))
-    Dim index As Long
-    For index = LBound(rawDataArray) To UBound(rawDataArray)
-        If isNumeric(rawDataArray(index, 1)) Then GoTo errHandler
-        stringArray(index) = CStr(rawDataArray(index, 1))
-    Next
-    IsStringArray = stringArray
-    Exit Function
-errHandler:
-    MsgBox "not string"
-End Function
 
-Private Sub CombSortNumbers(ByRef numberArray() As Double, Optional ByVal sortAscending As Boolean = True)
+Private Sub CombSortArray(ByRef dataArray As Variant, Optional ByVal numberOfColumns As Long = 1, Optional ByVal sortKeyColumn As Long = 1, Optional ByVal sortAscending As Boolean = True)
     Const SHRINK As Double = 1.3
     Dim initialSize As Long
-    initialSize = UBound(numberArray())
+    initialSize = UBound(dataArray, 1)
     Dim gap As Long
     gap = initialSize
     Dim index As Long
@@ -79,13 +41,13 @@ Private Sub CombSortNumbers(ByRef numberArray() As Double, Optional ByVal sortAs
         index = 1
         Do While index + gap <= initialSize
             If sortAscending Then
-                If numberArray(index) > numberArray(index + gap) Then
-                    SwapNumberElements numberArray, index, index + gap
+                If dataArray(index, sortKeyColumn) > dataArray(index + gap, sortKeyColumn) Then
+                    SwapElements dataArray, numberOfColumns, index, index + gap
                     isSorted = False
                 End If
             Else
-                If numberArray(index) < numberArray(index + gap) Then
-                    SwapNumberElements numberArray, index, index + gap
+                If dataArray(index) < dataArray(index + gap) Then
+                    SwapElements dataArray, numberOfColumns, index, index + gap
                     isSorted = False
                 End If
             End If
@@ -95,52 +57,13 @@ Private Sub CombSortNumbers(ByRef numberArray() As Double, Optional ByVal sortAs
     
 End Sub
 
-Private Sub SwapNumberElements(ByRef numberArray() As Double, ByVal i As Long, ByVal j As Long)
-    Dim temporaryHolder As Double
-    temporaryHolder = numberArray(i)
-    numberArray(i) = numberArray(j)
-    numberArray(j) = temporaryHolder
-End Sub
-
-Private Sub CombSortStrings(ByRef stringArray() As String, Optional ByVal sortAscending As Boolean = True)
-    Const SHRINK As Double = 1.3
-    Dim initialSize As Long
-    initialSize = UBound(stringArray())
-    Dim gap As Long
-    gap = initialSize
+Private Sub SwapElements(ByRef dataArray As Variant, ByVal numberOfColumns As Long, ByVal i As Long, ByVal j As Long)
+    Dim temporaryHolder As Variant
     Dim index As Long
-    Dim isSorted As Boolean
-    
-    Do While gap > 1 And Not isSorted
-        gap = Int(gap / SHRINK)
-        If gap > 1 Then
-            isSorted = False
-        Else
-            gap = 1
-            isSorted = True
-        End If
-        index = 1
-        Do While index + gap <= initialSize
-            If sortAscending Then
-                If stringArray(index) > stringArray(index + gap) Then
-                    SwapStringElements stringArray, index, index + gap
-                    isSorted = False
-                End If
-            Else
-                If stringArray(index) < stringArray(index + gap) Then
-                    SwapStringElements stringArray, index, index + gap
-                    isSorted = False
-                End If
-            End If
-            index = index + 1
-        Loop
-    Loop
-    
+    For index = 1 To numberOfColumns
+        temporaryHolder = dataArray(i, index)
+        dataArray(i, index) = dataArray(j, index)
+        dataArray(j, index) = temporaryHolder
+    Next
 End Sub
 
-Private Sub SwapStringElements(ByRef stringArray() As String, ByVal i As Long, ByVal j As Long)
-    Dim temporaryHolder As String
-    temporaryHolder = stringArray(i)
-    stringArray(i) = stringArray(j)
-    stringArray(j) = temporaryHolder
-End Sub
