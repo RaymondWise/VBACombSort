@@ -46,7 +46,7 @@ Private Sub CombSortArray(ByRef dataArray As Variant, Optional ByVal numberOfCol
                     isSorted = False
                 End If
             Else
-                If dataArray(index) < dataArray(index + gap) Then
+                If dataArray(index, sortKeyColumn) < dataArray(index + gap, sortKeyColumn) Then
                     SwapElements dataArray, numberOfColumns, index, index + gap
                     isSorted = False
                 End If
