@@ -1,4 +1,4 @@
-#VBA Comb Sort for 1-dimensional array
+#VBA Comb Sort
 
 [MIT license](https://opensource.org/licenses/MIT)<br>
 Copyright 2017 Raymond Wise @ [Github Source](https://github.com/RaymondWise/VBACombSort) 
@@ -10,10 +10,10 @@ Copyright 2017 Raymond Wise @ [Github Source](https://github.com/RaymondWise/VBA
 2 Dimension [![Code Review](http://www.zomis.net/codereview/shield/?qid=155640)](http://codereview.stackexchange.com/q/155640/75587)
 
 ##What this is
-This project has procedures for comb-sorting both integers, decimals and strings. This works only on ONE-DIMENSIONAL ARRAYS.
+This project has a combsort procedure that takes Variants and sorts on a key. Variants can be multiple-dimensional arrays.
 
 ##How to use this
-Within excel you must open the Visual Basic Editor (VBE) to import the `.bas` file. On Windows you can open the VBE by pressing <kbd>Alt</kbd> + <kbd>F11</kbd>. Once open, you can import the file by pressing <kbd>Ctrl</kbd> + <kbd>M</kbd>, browse to the downloaded file `VBACombSortOneDimension.bas` and click Open. Once imported, on the left side in the Project Explorer you will have a module called *VBACombSortOneDimension* that contains this code.
+Within excel you must open the Visual Basic Editor (VBE) to import the `.bas` file. On Windows you can open the VBE by pressing <kbd>Alt</kbd> + <kbd>F11</kbd>. Once open, you can import the file by pressing <kbd>Ctrl</kbd> + <kbd>M</kbd>, browse to the downloaded file `VBACombSort.bas` and click Open. Once imported, on the left side in the Project Explorer you will have a module called *VBACombSort* that contains this code.
 
 Once imported, the sorting procedure can be utilized by other procedures and modules.
 
